@@ -1,0 +1,15 @@
+-- file : config.lua
+local module = {}
+
+module.SSID = {}  
+module.SSID["Fieldhouse2"] = ""
+module.SSID["Fieldhouse's Network"] = ""
+
+module.HOST = "io.adafruit.com"  
+module.PORT = 1884  
+module.ID = node.chipid()
+module.AIOUSERNAME = "kfieldho"
+module.AIOKEY = ""
+
+module.ENDPOINT = "nodemcu/"  
+return module  
