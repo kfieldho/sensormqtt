@@ -14,6 +14,12 @@ local function wifi_wait_ip()
   end
 end
 
+--
+-- Loops through the SSIDs it sees, connects to 
+-- the first one it has a password for (from config.lua)
+-- Once it's done so, calls wifi_wait_ip which will
+-- start the app once it gets a valid IP address
+-- 
 local function wifi_start(list_aps)  
     if list_aps then
         for key,value in pairs(list_aps) do
@@ -34,6 +40,10 @@ end
 function module.start()  
   print("Configuring Wifi ...")
   wifi.setmode(wifi.STATION);
+
+  -- Calls teh builtin function wifi.sta.getap() which takes 
+  -- a function to handle all available aps, in this case wifi_start() 
+  --
   wifi.sta.getap(wifi_start)
 end
 

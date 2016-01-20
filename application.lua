@@ -1,5 +1,8 @@
 -- file : application.lua
 local module = {}  
+
+-- Will hold the mqtt client object once mqtt_start is
+-- called.
 m = nil
 
 -- Sends a simple ping to the broker
@@ -26,13 +29,18 @@ local function mqtt_start()
     -- Connect to broker
     m:connect(config.HOST, config.PORT, 0, 1, function(con) 
         register_myself()
-        -- And then pings each 1000 milliseconds
+        -- And then pings each 1000 milliseconds.  ALARM_AUTO resets
+		-- and re-calls the passed function (send_ping) at intervals 
         tmr.stop(6)
-        tmr.alarm(6, 1000, 1, send_ping)
+        tmr.alarm(6, 1000, tmr.ALARM_AUTO, send_ping)
     end) 
 
 end
 
+--
+-- Called by setup.wifit_get__ip once the node is has
+-- recieved an IP address and the network is up.
+--
 function module.start()  
   mqtt_start()
 end
