@@ -2,14 +2,17 @@
 local module = {}
 
 module.SSID = {}  
-module.SSID["Fieldhouse2"] = ""
-module.SSID["Fieldhouse's Network"] = ""
+module.SSID["Fieldhouse2"] = "password1"
+module.SSID["Fieldhouse's Network"] = "password2"
 
 module.HOST = "io.adafruit.com"  
 module.PORT = 1883
 module.ID = node.chipid()
 module.AIOUSERNAME = "kfieldho"
-module.AIOKEY = ""
+module.AIOKEY = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa77"
 
-module.ENDPOINT = "nodemcu/"  
+module.ENDPOINTPUB = "kfieldho/feeds/seedbed"  
+module.ENDPOINTSUB = "kfieldho/feeds/welcome-feed"  
+
+module.DHTPIN = 5
 return module  

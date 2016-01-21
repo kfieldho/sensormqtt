@@ -6,13 +6,17 @@ local module = {}
 m = nil
 
 -- Sends a simple ping to the broker
-local function send_ping()  
-    m:publish(config.ENDPOINT .. "ping","id=" .. config.ID,0,0)
+local function send_data()  
+	status, temperature, humidity, temperature_dec, humidity_dec = dht.read(config.DHTPIN)
+	if status == dht.OK then
+		m:publish(config.ENDPOINTPUB.."temperature",temperature,0,0)
+		m:publish(config.ENDPOINTPUB.."humidity",humidity,0,0)
+	end
 end
 
 -- Sends my id to the broker for registration
 local function register_myself()  
-    m:subscribe(config.ENDPOINT .. config.ID,0,function(conn)
+    m:subscribe(config.ENDPOINTSUB,0,function(conn)
         print("Successfully subscribed to data endpoint")
     end)
 end
@@ -29,10 +33,10 @@ local function mqtt_start()
     -- Connect to broker
     m:connect(config.HOST, config.PORT, 0, 1, function(con) 
         register_myself()
-        -- And then pings each 1000 milliseconds.  ALARM_AUTO resets
-		-- and re-calls the passed function (send_ping) at intervals 
+        -- And then pings each 1000 * 60 milliseconds.  ALARM_AUTO resets
+		-- and re-calls the passed function (send_data) at intervals 
         tmr.stop(6)
-        tmr.alarm(6, 1000, tmr.ALARM_AUTO, send_ping)
+        tmr.alarm(6, 1000 * 60, tmr.ALARM_AUTO, send_data)
     end) 
 
 end
